@@ -1,0 +1,24 @@
+#!/bin/bash
+# Copyright (C) 2016 Davide Madrisan <davide.madrisan.ext@steria.com>
+
+# Simple script that help generating the README.md documentation
+
+[ -r docker-bash-helpers.sh ] || exit 1 
+
+while read line; do
+   set -- $line
+   case "$1" in
+      "function")
+         fncname="$2"
+         [[ "$fncname" =~ __ ]] && continue
+         echo "* __${fncname/__/\\_\\_}__" ;;
+      "#")
+         [[ "$2" =~ doc. ]] || continue
+         shift
+         label="${1/doc./}"
+         shift
+         echo "  * _${label}_ $@" ;;
+      "}")
+         unset fncname ;;
+   esac
+done < docker-bash-helpers.sh
