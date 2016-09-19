@@ -79,7 +79,7 @@ function container_property() {
          --id) property="id" ;;
          --ipaddr) property="ipaddr" ;;
          --os) property="os" ;;
-         --*|-*) die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
+         --*|-*) __die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
          *) container_name="$1" ;;
       esac
       shift
@@ -111,7 +111,7 @@ container_exec_command "$container_name" "cat /etc/redhat-release" 2>/dev/null)"
           fi
           echo "$os"
       ;;
-      *) die "BUG: $FUNCNAME: unknown property \"$property\"" ;;
+      *) __die "BUG: $FUNCNAME: unknown property \"$property\"" ;;
    esac
 }
 
@@ -131,25 +131,25 @@ function container_create() {
          --name) name="$2"; shift ;;
          --random-name) random_name=1 ;;
          --os) os="$2"; shift ;;
-         --*|-*) die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
-         *) die "BUG: $FUNCNAME: unknown option(s): $@" ;;
+         --*|-*) __die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
+         *) __die "BUG: $FUNCNAME: unknown option(s): $@" ;;
       esac
       shift
    done
 
-   [ "$os" ] || die "BUG: $FUNCNAME: --os has not been set"
+   [ "$os" ] || __die "BUG: $FUNCNAME: --os has not been set"
    [ "$disk" ] && disk_opt="-v $disk"
    if [ "$random_name" = 1 ]; then
       name="${os/:/.}_$(</dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)"
    elif [ -z "$name" ]; then
-      die "BUG: $FUNCNAME: --name has not been set"
+      __die "BUG: $FUNCNAME: --name has not been set"
    fi
 
    container_exists "$name" ||
       sudo docker run -itd --name="$name" --network=bridge $disk_opt "$os" \
          >/dev/null
    [ $? -eq 0 ] ||
-      die "ERROR: $FUNCNAME: cannot instantiate the container $name"
+      __die "ERROR: $FUNCNAME: cannot instantiate the container $name"
    echo "$name"
 }
 
