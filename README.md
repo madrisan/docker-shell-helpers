@@ -33,6 +33,7 @@ The __docker-shell-helpers__ library currently provides the following public fun
 * __container_create()__
   * _desc:_ create a container and return its name
   * _args:_ --name (or --random-name), --os and a host folder (--disk) to map
+  * _example:_ container_create --random-name --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
 * __container_start()__
   * _desc:_ start a container if not running
   * _args:_ container name
@@ -53,11 +54,15 @@ Here's is a simple example of how the library functions can be used.
 ```
 . docker-shell-helpers.sh
 
-container_create --name centos7 --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
-container_start centos7
-echo "The running OS is: $(container_property --os centos7)"
+cname="$(container_create --random-name --os "centos:latest")"
+container_list
+  #--> centos.latest_kw05yg2Y
 
-container_exec_command centos7 "\
+container_start $cname
+echo "The running OS is: $(container_property --os $cname)"
+  #--> The running OS is: centos-7.2.1511
+
+container_exec_command $cname "\
    yum install -y autoconf automake gcc git make
    cd /root
    git clone https://github.com/madrisan/nagios-plugins-linux
@@ -65,6 +70,8 @@ container_exec_command centos7 "\
    autoreconf
    ./configure && make && ./plugins/check_uptime --clock-monotonic
 "
+  #--> ...
+  #    uptime OK: 19 hours 18 min | uptime=1158
 
-container_remove centos7
+container_remove $cname
 ```

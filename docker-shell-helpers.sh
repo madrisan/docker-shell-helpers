@@ -118,6 +118,7 @@ container_exec_command "$container_name" "cat /etc/redhat-release" 2>/dev/null)"
 function container_create() {
    # doc.desc: create a container and return its name
    # doc.args: --name (or --random-name), --os and a host folder (--disk) to map
+   # doc.example: container_create --random-name --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
    local disk=
    local disk_opt=
    local name=
