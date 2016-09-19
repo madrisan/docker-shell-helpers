@@ -3,7 +3,9 @@
 
 # Simple script that help generating the README.md documentation
 
-[ -r docker-bash-helpers.sh ] || exit 1 
+helpers_lib="docker-shell-helpers.sh"
+
+[ -r "$helpers_lib" ] || exit 1
 
 while read line; do
    set -- $line
@@ -21,4 +23,4 @@ while read line; do
       "}")
          unset fncname ;;
    esac
-done < docker-bash-helpers.sh
+done < "$helpers_lib"

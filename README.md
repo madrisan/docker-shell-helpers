@@ -1,7 +1,7 @@
 # Helper functions for using Docker in shell scripts
 
-The script __docker-shell-helpers.sh__ provides a list of functions for making
-(hopefully) simpler the creation and usage of Docker containers inside a shell scripts.
+The script __docker-shell-helpers.sh__ provides a list of helper functions for making
+even simpler the creation, usage, and destruction of Docker containers inside a shell script.
 
 ## List of Helper Functions
 
@@ -29,8 +29,8 @@ The __docker-shell-helpers__ library currently provides the following public fun
   * _desc:_ get a container property
   * _args:_ container name and one of the options: --id, --ipaddr, --os
 * __container_create()__
-  * _desc:_ create a container
-  * _args:_ container --name, --os and a host folder (--disk) to map
+  * _desc:_ create a container and return its name
+  * _args:_ --name (or --random-name), --os and a host folder (--disk) to map
 * __container_start()__
   * _desc:_ start a container if not running
   * _args:_ container name
@@ -49,6 +49,8 @@ The __docker-shell-helpers__ library currently provides the following public fun
 Here's is a simple example of how the library functions can be used.
 
 ```
+. docker-shell-helpers.sh
+
 container_create --name centos7 --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
 container_start centos7
 echo "The running OS is: $(container_property --os centos7)"
