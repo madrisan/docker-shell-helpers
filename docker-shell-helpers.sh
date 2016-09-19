@@ -19,7 +19,7 @@ __PROGNAME="${0##*/}"
 function __die() { echo "${__PROGNAME}: ERROR: $1" 1>&2; exit 1; }
 function __isnotempty() { [ "$1" ] && return 0 || return 1; }
 function __validate_input() {
-   [ "$2" ] || __die "BUG: $1 requires an argument (container name)"
+   [ "$2" ] || __die "$1 requires an argument (container name)"
 }
 
 # public helper functions
@@ -79,7 +79,7 @@ function container_property() {
          --id) property="id" ;;
          --ipaddr) property="ipaddr" ;;
          --os) property="os" ;;
-         --*|-*) __die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
+         --*|-*) __die "$FUNCNAME: unknown switch \"$1\"" ;;
          *) container_name="$1" ;;
       esac
       shift
@@ -111,7 +111,7 @@ container_exec_command "$container_name" "cat /etc/redhat-release" 2>/dev/null)"
           fi
           echo "$os"
       ;;
-      *) __die "BUG: $FUNCNAME: unknown property \"$property\"" ;;
+      *) __die "$FUNCNAME: unknown property \"$property\"" ;;
    esac
 }
 
@@ -132,18 +132,18 @@ function container_create() {
          --name) name="$2"; shift ;;
          --random-name) random_name=1 ;;
          --os) os="$2"; shift ;;
-         --*|-*) __die "BUG: $FUNCNAME: unknown switch \"$1\"" ;;
-         *) __die "BUG: $FUNCNAME: unknown option(s): $@" ;;
+         --*|-*) __die "$FUNCNAME: unknown switch \"$1\"" ;;
+         *) __die "$FUNCNAME: unknown option(s): $@" ;;
       esac
       shift
    done
 
-   [ "$os" ] || __die "BUG: $FUNCNAME: --os has not been set"
+   [ "$os" ] || __die "$FUNCNAME: --os has not been set"
    [ "$disk" ] && disk_opt="-v $disk"
    if [ "$random_name" = 1 ]; then
       name="${os/:/.}_$(</dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)"
    elif [ -z "$name" ]; then
-      __die "BUG: $FUNCNAME: --name has not been set"
+      __die "$FUNCNAME: --name has not been set"
    fi
 
    container_exists "$name" ||
