@@ -54,6 +54,15 @@ Here's is a simple example of how the library functions can be used.
 container_create --name centos7 --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
 container_start centos7
 echo "The running OS is: $(container_property --os centos7)"
-container_exec_command centos7 "echo 'Hello World!'"
+
+container_exec_command centos7 "\
+   yum install -y autoconf automake gcc git make
+   cd /root
+   git clone https://github.com/madrisan/nagios-plugins-linux
+   cd nagios-plugins-linux
+   autoreconf
+   ./configure && make && ./plugins/check_uptime --clock-monotonic
+"
+
 container_remove centos7
 ```
