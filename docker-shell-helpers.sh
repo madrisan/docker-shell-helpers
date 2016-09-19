@@ -171,9 +171,3 @@ function container_list() {
    # doc.args: none
    sudo docker ps -qa --format='{{.Names}}' 2>/dev/null
 }
-
-function container_list_ul() {
-   # doc.desc: return the available container names, as an unsigned list
-   # doc.args: none
-   container_list | while read elem; do echo " - $elem"; done
-}

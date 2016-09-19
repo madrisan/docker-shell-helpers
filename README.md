@@ -43,9 +43,6 @@ The __docker-shell-helpers__ library currently provides the following public fun
 * __container_list()__
   * _desc:_ return the available container name
   * _args:_ none
-* __container_list_ul()__
-  * _desc:_ return the available container names, as an unsigned list
-  * _args:_ none
 
 ## Example
 
@@ -55,8 +52,8 @@ Here's is a simple example of how the library functions can be used.
 . docker-shell-helpers.sh
 
 cname="$(container_create --random-name --os "centos:latest")"
-container_list
-  #--> centos.latest_kw05yg2Y
+container_list | while read elem; do echo " - $elem"; done
+  #--> - centos.latest_kw05yg2Y
 
 container_start $cname
 echo "The running OS is: $(container_property --os $cname)"
