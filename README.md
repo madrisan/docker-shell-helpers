@@ -1,3 +1,5 @@
+![](images/docker.png?raw=true)
+
 # Helper functions for using Docker in shell scripts
 
 The script __docker-shell-helpers.sh__ provides a list of helper functions for making
