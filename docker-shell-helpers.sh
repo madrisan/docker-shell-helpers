@@ -16,29 +16,29 @@ docker_bash_helpers_revision="1"
 # 'private' definitions and functions
 
 __PROGNAME="${0##*/}"
-function __die() { echo "${__PROGNAME}: ERROR: $1" 1>&2; exit 1; }
-function __isnotempty() { [ "$1" ] && return 0 || return 1; }
-function __validate_input() {
+__die() { echo "${__PROGNAME}: ERROR: $1" 1>&2; exit 1; }
+__isnotempty() { [ "$1" ] && return 0 || return 1; }
+__validate_input() {
    [ "$2" ] || __die "$1 requires an argument (container name)"
 }
 
 # public helper functions
 
-function container_id() {
+container_id() {
    # doc.desc: return the _Docker Id_ of a container
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
    echo "$(sudo docker inspect --format='{{.Id}}' "$1" 2>/dev/null)"
 }
 
-function container_exists() {
+container_exists() {
    # doc.desc: return true if the container exists, and false otherwise
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
    __isnotempty "$(container_id "$1")"
 }
 
-function container_is_running() {
+container_is_running() {
    # doc.desc: return true if the container is running, and false otherwise
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
@@ -46,14 +46,14 @@ function container_is_running() {
 sudo docker ps -q --filter "name=$1" --filter 'status=running' 2>/dev/null)"
 }
 
-function container_stop() {
+container_stop() {
    # doc.desc: stop a container, if it's running
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
    container_is_running "$1" && sudo docker stop "$1"
 }
 
-function container_remove() {
+container_remove() {
    # doc.desc: stop and remove a container from the host node
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
@@ -61,14 +61,14 @@ function container_remove() {
       sudo docker rm -f "$1" >/dev/null
 }
 
-function container_exec_command() {
+container_exec_command() {
    # doc.desc: run a command (or a sequence of commands) inside a container
    # doc.args: container name
    __validate_input "$FUNCNAME" "$1"
    sudo docker exec -it "$1" /bin/bash -c "$2"
 }
 
-function container_property() {
+container_property() {
    # doc.desc: get a container property
    # doc.args: container name and one of the options: --id, --ipaddr, --os
    local container_name
@@ -115,7 +115,7 @@ container_exec_command "$container_name" "cat /etc/redhat-release" 2>/dev/null)"
    esac
 }
 
-function container_create() {
+container_create() {
    # doc.desc: create a container and return its name
    # doc.args: --name (or --random-name), --os and a host folder (--disk) to map
    # doc.example: container_create --random-name --os "centos:latest" --disk ~/docker-datadisk:/shared:rw
@@ -154,19 +154,19 @@ function container_create() {
    echo "$name"
 }
 
-function container_start() {
+container_start() {
    # doc.desc: start a container if not running
    # doc.args: container name
    container_is_running "$1" || sudo docker start "$1"
 }
 
-function container_status_table() {
+container_status_table() {
    # doc.desc: return the status of a container
    # doc.args: container name of no args to list all the containers
    [ "$1" ] && sudo docker ps --filter "name=$1" || sudo docker ps -a
 }
 
-function container_list() {
+container_list() {
    # doc.desc: return the available container name
    # doc.args: none
    sudo docker ps -qa --format='{{.Names}}' 2>/dev/null
