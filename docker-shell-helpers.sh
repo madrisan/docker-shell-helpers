@@ -1,6 +1,6 @@
 #!/bin/bash
 # Helper functions for using Docker in shell scripts
-# Copyright (C) 2016 Davide Madrisan <davide.madrisan.ext@steria.com>
+# Copyright (C) 2016 Davide Madrisan <davide.madrisan@gmail.com>
 
 # Here's is a simple example of how the library functions can be used!
 #

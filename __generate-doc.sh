@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2016 Davide Madrisan <davide.madrisan.ext@steria.com>
+# Copyright (C) 2016 Davide Madrisan <davide.madrisan@gmail.com>
 
 # Simple script that help generating the README.md documentation
 
