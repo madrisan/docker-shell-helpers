@@ -11,7 +11,7 @@
 #    container_exec_command centos7 "echo 'Hello World!'"
 #    container_remove centos7
 
-docker_bash_helpers_revision="1"
+docker_bash_helpers_revision="2"
 
 # 'private' definitions and functions
 
