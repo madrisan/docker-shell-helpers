@@ -150,7 +150,7 @@ container_create() {
    fi
 
    container_exists "$name" ||
-      sudo docker run -itd --name="$name" $disk_opt "$os" \
+      sudo docker run -itd --name="$name" $disk_opt "$os" "/bin/bash" \
          >/dev/null
    [ $? -eq 0 ] ||
       __die "ERROR: $FUNCNAME: cannot instantiate the container $name"
