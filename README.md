@@ -1,3 +1,7 @@
+![Release Status](https://img.shields.io/badge/status-stable-brightgreen.svg)
+[![Code Climate](https://codeclimate.com/github/madrisan/docker-shell-helpers/badges/gpa.svg)](https://codeclimate.com/github/madrisan/docker-shell-helpers)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://spdx.org/licenses/Apache-2.0.html)
+
 ![](images/docker.png?raw=true)
 
 # Helper functions for using Docker in shell scripts
