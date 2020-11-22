@@ -1,5 +1,5 @@
 #!/bin/bash
-# Helper functions for using Docker in shell scripts
+# Helper functions for using Docker in shell scripts, revision 3
 # Copyright (C) 2016,2017 Davide Madrisan <davide.madrisan@gmail.com>
 
 # Here's is a simple example of how the library functions can be used!
@@ -8,10 +8,8 @@
 #                     --disk ~/docker-datadisk:/shared:rw
 #    container_start centos7
 #    echo "The running OS is: $(container_property --os centos7)"
-#    container_exec_command centos7 "echo 'Hello World!'"
+#    container_exec_command centos7 'echo "Hello World!"'
 #    container_remove centos7
-
-docker_bash_helpers_revision="3"
 
 # 'private' definitions and functions
 
@@ -65,7 +63,7 @@ container_exec_command() {
    # doc.desc: run a command (or a sequence of commands) inside a container
    # doc.args: container name
    __validate_input "${FUNCNAME[0]}" "$1"
-   sudo docker exec -it "$1" /bin/bash -c "$2"
+   sudo docker exec -it "$1" /bin/sh -c "$2"
 }
 
 container_property() {
@@ -115,7 +113,9 @@ container_exec_command "$container_name" "\
       cat /etc/debian_version
    fi")"
           set -- $container_os
-          if [ "$1" = "CentOS" ]; then
+	  if [ "$1" = "alpine" ]; then
+             os="alpine-${2}"
+          elif [ "$1" = "CentOS" ]; then
              [ "$2" = "Linux" ] && os="centos-${4}" || os="centos-${3}"
           elif [ "$1" = "Fedora" ]; then
              os="fedora-${3}"
@@ -159,7 +159,7 @@ container_create() {
 
    if ! (container_exists "$name" ||
       sudo docker run -itd --name="$name" ${disk:+-v $disk} "$os" \
-         "/bin/bash" >/dev/null); then
+         "/bin/sh" >/dev/null); then
       __die "${FUNCNAME[0]}: cannot instantiate the container $name"
    fi
    echo "$name"
