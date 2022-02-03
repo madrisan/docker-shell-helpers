@@ -1,6 +1,6 @@
 #!/bin/bash
 # Helper functions for using Docker in shell scripts, revision 3
-# Copyright (C) 2016,2017 Davide Madrisan <davide.madrisan@gmail.com>
+# Copyright (C) 2016,2017,2022 Davide Madrisan <davide.madrisan@gmail.com>
 
 # Here's is a simple example of how the library functions can be used!
 #
@@ -152,7 +152,7 @@ container_create() {
 
    [ "$os" ] || __die "${FUNCNAME[0]}: --os has not been set"
    if [ "$random_name" = 1 ]; then
-      name="${os/:/.}_$(</dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)"
+      name="$(echo "$os" | sed "s/[:\/]/_/g")_$(</dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8)"
    elif [ -z "$name" ]; then
       __die "${FUNCNAME[0]}: --name has not been set"
    fi
