@@ -1,6 +1,6 @@
 #!/bin/bash
 # Helper functions for using Docker in shell scripts, revision 3
-# Copyright (C) 2016,2017,2022 Davide Madrisan <davide.madrisan@gmail.com>
+# Copyright (C) 2016,2017,2022-2023 Davide Madrisan <davide.madrisan@gmail.com>
 
 # Here's is a simple example of how the library functions can be used!
 #
@@ -119,6 +119,8 @@ container_exec_command "$container_name" "\
              [ "$2" = "Linux" ] && os="centos-${4}" || os="centos-${3}"
           elif [ "$1" = "Fedora" ]; then
              os="fedora-${3}"
+          elif [ "$1" = "Rocky" ]; then
+             os="rockylinux-${4}"
           elif [ "$1" = "debian" ]; then
              os="debian-${2}"
           fi
